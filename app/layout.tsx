@@ -1,0 +1,18 @@
+import type { Metadata } from 'next';
+import '../assets/styles.css';
+import { AuthProvider } from '../components';
+
+export const metadata: Metadata = {
+  title: 'Components Playground',
+  description: 'Interactive preview of the reusable TaskFlow component library',
+};
+
+export default function PlaygroundLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className="m-0 bg-slate-50 font-sans text-slate-800 antialiased">
+        <AuthProvider storagePrefix="taskflow_playground">{children}</AuthProvider>
+      </body>
+    </html>
+  );
+}

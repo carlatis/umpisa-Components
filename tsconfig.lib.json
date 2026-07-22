@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": false,
+    "noEmit": false,
+    "outDir": "dist"
+  },
+  "include": ["components/**/*.ts", "components/**/*.tsx", "server/**/*.ts", "utils/**/*.ts"],
+  "exclude": ["app", ".next", "dist", "node_modules"]
+}

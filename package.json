@@ -1,0 +1,50 @@
+{
+  "name": "component-library",
+  "version": "1.0.0",
+  "private": false,
+  "type": "module",
+  "main": "./dist/components/index.js",
+  "types": "./dist/components/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js",
+      "default": "./dist/components/index.js"
+    },
+    "./next-config": {
+      "types": "./dist/server/next-config.d.ts",
+      "import": "./dist/server/next-config.js",
+      "default": "./dist/server/next-config.js"
+    },
+    "./styles.css": "./assets/styles.css"
+  },
+  "files": [
+    "dist",
+    "assets/styles.css",
+    "public"
+  ],
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "npm run build:lib && next build",
+    "build:lib": "tsc -p tsconfig.lib.json",
+    "start": "next start -p 3001",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepack": "npm run build:lib"
+  },
+  "peerDependencies": {
+    "next": ">=15",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/node": "26.1.1",
+    "@types/react": "^19.0.0",
+    "next": "^16.2.11",
+    "prettier": "^3.6.2",
+    "react": "^19.0.0",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.7.0"
+  }
+}
