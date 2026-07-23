@@ -14,7 +14,7 @@ const AuthContext = createContext<AuthValue | null>(null);
 /** Client-side authentication context shared by consuming Next.js applications. */
 export function AuthProvider({
   children,
-  storagePrefix = 'taskflow',
+  storagePrefix = 'umpisa',
 }: {
   children: ReactNode;
   storagePrefix?: string;
@@ -50,6 +50,7 @@ export function AuthProvider({
     <AuthContext.Provider value={{ user, ready, login, logout }}>{children}</AuthContext.Provider>
   );
 }
+
 export function useAuth() {
   const value = useContext(AuthContext);
   if (!value) throw new Error('useAuth must be used inside AuthProvider');

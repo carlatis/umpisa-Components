@@ -1,6 +1,6 @@
 {
   "name": "component-library",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "type": "module",
   "main": "./dist/components/index.js",
@@ -30,6 +30,7 @@
     "start": "next start -p 3001",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "prepare": "npm run build:lib",
     "prepack": "npm run build:lib"
   },
   "peerDependencies": {

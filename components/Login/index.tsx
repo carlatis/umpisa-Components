@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { AuthLayout } from '../AuthLayout';
 import { Button } from '../Button';
 import { Field } from '../Field';
@@ -11,10 +11,12 @@ export function Login({
   onSubmit,
   initialEmail = '',
   initialPassword = '',
+  helper,
 }: {
   onSubmit: (credentials: LoginCredentials) => Promise<void>;
   initialEmail?: string;
   initialPassword?: string;
+  helper?: ReactNode;
 }) {
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState(initialPassword);
@@ -34,11 +36,13 @@ export function Login({
   }
   return (
     <AuthLayout title="Welcome back" description="Sign in to manage your delivery work.">
+      {helper}
       <Form onSubmit={submit}>
         {error && <div className="rounded-lg bg-red-100 px-3 py-2.5 text-red-700">{error}</div>}
         <Field
           label="Email"
           type="email"
+          autoComplete="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           required
@@ -46,6 +50,7 @@ export function Login({
         <Field
           label="Password"
           type="password"
+          autoComplete="current-password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required

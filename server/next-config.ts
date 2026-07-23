@@ -9,4 +9,4 @@ export function withComponentLibrary(config: NextConfig = {}): NextConfig {
 }
 
 /** Backward-compatible name for existing consumers. */
-export const withTaskflowLayer = withComponentLibrary;
+export const withUmpisaLayer = withComponentLibrary;

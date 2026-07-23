@@ -1,12 +1,71 @@
 'use client';
 
-import { AppShell, Badge, Button, Card, EmptyState, Input, Library, useAuth } from '../components';
+import {
+  AppShell,
+  Card,
+  Dashboard,
+  Login,
+  ProjectDetails,
+  Projects,
+  Users,
+  type ProjectSummary,
+  type TaskListItem,
+  type UserListItem,
+} from '../components';
 import { useState } from 'react';
 
+type PlaygroundTab = 'login' | 'dashboard' | 'projects' | 'tasks' | 'users';
+
+const playgroundTabs: { id: PlaygroundTab; label: string }[] = [
+  { id: 'login', label: 'Login' },
+  { id: 'dashboard', label: 'Dashboard' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'tasks', label: 'Tasks' },
+  { id: 'users', label: 'Users' },
+];
+
 function ComponentGallery() {
-  const [name, setName] = useState('Sample project');
+  const [activeTab, setActiveTab] = useState<PlaygroundTab>('login');
+  const [result, setResult] = useState('Ready—interact with a component to test it.');
+  const [projects, setProjects] = useState<ProjectSummary[]>([
+    { id: 'project-1', name: 'Website launch', description: 'Prepare the Umpisa Inc. launch.' },
+  ]);
+  const [tasks, setTasks] = useState<TaskListItem[]>([
+    {
+      id: 'task-1',
+      title: 'Review production checklist',
+      status: 'IN_PROGRESS',
+      priority: 'HIGH',
+      severity: 'MAJOR',
+    },
+  ]);
+  const [users, setUsers] = useState<UserListItem[]>([
+    {
+      id: 'user-1',
+      name: 'First Administrator',
+      email: 'admin@umpisa.test',
+      createdAt: new Date().toISOString(),
+      isProtected: true,
+    },
+    {
+      id: 'user-2',
+      name: 'UI Reviewer',
+      email: 'reviewer@umpisa.test',
+      createdAt: new Date().toISOString(),
+      isProtected: false,
+    },
+  ]);
   return (
-    <AppShell brand="Components" navigation={[{ href: '/', label: 'Components' }]}>
+    <AppShell
+      brand="Component Library"
+      navigation={playgroundTabs.map((tab) => ({
+        href: '/',
+        label: tab.label,
+        active: activeTab === tab.id,
+        onSelect: () => setActiveTab(tab.id),
+      }))}
+      requireAuth={false}
+    >
       <div className="mx-auto max-w-6xl p-4 md:p-8">
         <div className="mb-6">
           <span className="text-xs font-extrabold tracking-[0.12em] text-indigo-600 uppercase">
@@ -17,77 +76,149 @@ function ComponentGallery() {
             Interact with every reusable component before publishing the package.
           </p>
         </div>
-        <Library>
-          <Card>
-            <h2 className="mt-0">Buttons and badges</h2>
-            <div className="flex flex-wrap items-center gap-3">
-              <Button>Primary action</Button>
-              <Button disabled>Disabled</Button>
-              <Badge>Neutral</Badge>
-              <Badge tone="success">Complete</Badge>
-              <Badge tone="warning">High priority</Badge>
-            </div>
-          </Card>
-          <Card>
-            <h2 className="mt-0">Form fields</h2>
-            <div className="grid gap-4">
-              <Input
-                label="Project name"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-              <Input label="Invalid example" value="" error="This field is required" readOnly />
-            </div>
-          </Card>
-          <Card>
-            <h2 className="mt-0">Interactive value</h2>
-            <p className="text-slate-500">The field above updates this preview.</p>
-            <div className="rounded-xl bg-indigo-50 p-4 font-bold text-indigo-800">
-              {name || 'Nothing entered'}
-            </div>
-          </Card>
-          <Card>
-            <h2 className="mt-0">Empty state</h2>
-            <EmptyState
-              title="No projects yet"
-              description="Create a project to see it here."
-              action={<Button>Create project</Button>}
+
+        <div className={activeTab === 'login' ? 'block' : 'hidden'} role="tabpanel">
+          <h2 className="mb-1 text-2xl font-extrabold">Login component</h2>
+          <p className="mt-0 text-slate-500">
+            Submit the reusable login form to test its loading and error states.
+          </p>
+          <Card className="overflow-hidden p-0">
+            <Login
+              helper={
+                <div className="mb-4 rounded-lg border border-indigo-200 bg-indigo-50 p-3 text-sm text-indigo-900">
+                  <strong>Default playground credentials</strong>
+                  <div>Email: reviewer@umpisa.test</div>
+                  <div>Password: Password123!</div>
+                </div>
+              }
+              initialEmail="reviewer@umpisa.test"
+              initialPassword="Password123!"
+              onSubmit={async (credentials) => {
+                if (
+                  credentials.email !== 'reviewer@umpisa.test' ||
+                  credentials.password !== 'Password123!'
+                ) {
+                  throw new Error('Invalid playground email or password');
+                }
+
+                setResult(`Login form submitted for ${credentials.email}.`);
+              }}
             />
           </Card>
-        </Library>
+        </div>
+        <div className="my-8 rounded-xl border border-indigo-200 bg-indigo-50 p-4 text-indigo-900">
+          <strong>Interaction result</strong>
+          <p className="mb-0">{result}</p>
+        </div>
+
+        <section>
+          <div className={activeTab === 'dashboard' ? 'block' : 'hidden'} role="tabpanel">
+            <h2 className="mb-1 text-2xl font-extrabold">Dashboard component</h2>
+            <p className="mt-0 text-slate-500">Rendered with representative project data.</p>
+            <Card className="overflow-hidden p-0">
+              <Dashboard
+                summary={{ projects: projects.length, todo: 2, inProgress: 1, done: 3 }}
+                projects={projects}
+              />
+            </Card>
+          </div>
+
+          <div className={activeTab === 'projects' ? 'block' : 'hidden'} role="tabpanel">
+            <h2 className="mb-1 text-2xl font-extrabold">Projects component</h2>
+            <p className="mt-0 text-slate-500">
+              Open the modal and create a project. Data stays inside the playground.
+            </p>
+            <Card className="overflow-hidden p-0">
+              <Projects
+                projects={projects}
+                onCreate={async (draft) => {
+                  setProjects((current) => [
+                    ...current,
+                    { id: crypto.randomUUID(), name: draft.name, description: draft.description },
+                  ]);
+                  setResult(`Project “${draft.name}” was created successfully.`);
+                }}
+              />
+            </Card>
+          </div>
+
+          <div className={activeTab === 'tasks' ? 'block' : 'hidden'} role="tabpanel">
+            <h2 className="mb-1 text-2xl font-extrabold">Project details and tasks</h2>
+            <p className="mt-0 text-slate-500">
+              Test task creation and manually change status, priority, and severity.
+            </p>
+            <Card className="overflow-hidden p-0">
+              <ProjectDetails
+                project={{
+                  id: 'project-1',
+                  name: 'Website launch',
+                  description: 'Interactive task component test.',
+                  tasks,
+                }}
+                onAddTask={async (draft) => {
+                  setTasks((current) => [
+                    ...current,
+                    { id: crypto.randomUUID(), status: 'TODO', ...draft },
+                  ]);
+                  setResult(`Task “${draft.title}” was added successfully.`);
+                }}
+                onTaskChange={async (task, update) => {
+                  setTasks((current) =>
+                    current.map((item) => (item.id === task.id ? { ...item, ...update } : item)),
+                  );
+                  setResult(`Task “${task.title}” was updated successfully.`);
+                }}
+              />
+            </Card>
+          </div>
+
+          <div className={activeTab === 'users' ? 'block' : 'hidden'} role="tabpanel">
+            <h2 className="mb-1 text-2xl font-extrabold">Users component</h2>
+            <p className="mt-0 text-slate-500">
+              Test adding, editing, deleting, validation display, and first-user protection.
+            </p>
+            <Card className="overflow-hidden p-0">
+              <Users
+                users={users}
+                onCreate={async (draft) => {
+                  if (users.some((user) => user.email === draft.email)) {
+                    const error = new Error('Validation failed') as Error & {
+                      issues: Record<string, string[]>;
+                    };
+                    error.issues = { email: ['Email already exists in the playground'] };
+                    throw error;
+                  }
+                  setUsers((current) => [
+                    ...current,
+                    {
+                      id: crypto.randomUUID(),
+                      name: draft.name,
+                      email: draft.email,
+                      createdAt: new Date().toISOString(),
+                      isProtected: false,
+                    },
+                  ]);
+                  setResult(`User “${draft.name}” was created successfully.`);
+                }}
+                onUpdate={async (id, draft) => {
+                  setUsers((current) =>
+                    current.map((user) => (user.id === id ? { ...user, ...draft } : user)),
+                  );
+                  setResult(`User “${draft.name}” was updated successfully.`);
+                }}
+                onDelete={async (id) => {
+                  setUsers((current) => current.filter((user) => user.id !== id));
+                  setResult('User was deleted successfully.');
+                }}
+              />
+            </Card>
+          </div>
+        </section>
       </div>
     </AppShell>
   );
 }
 
 export default function PlaygroundPage() {
-  const { user, ready, login } = useAuth();
-  if (!ready) return <div className="grid min-h-screen place-items-center">Loading…</div>;
-  if (!user)
-    return (
-      <main className="grid min-h-screen place-items-center bg-linear-to-br from-indigo-50 to-slate-50 p-4">
-        <Card className="w-full max-w-[440px] text-center">
-          <span className="text-xs font-extrabold tracking-[0.12em] text-indigo-600 uppercase">
-            Standalone Next.js preview
-          </span>
-          <h1 className="my-1 text-4xl font-extrabold tracking-tight">Components</h1>
-          <p className="mt-0 text-slate-500">
-            Start a local demo session to test the authenticated shell and shared components.
-          </p>
-          <Button
-            className="w-full"
-            onClick={() =>
-              login('playground-token', {
-                id: 'demo',
-                name: 'UI Reviewer',
-                email: 'reviewer@example.com',
-              })
-            }
-          >
-            Open component playground
-          </Button>
-        </Card>
-      </main>
-    );
   return <ComponentGallery />;
 }

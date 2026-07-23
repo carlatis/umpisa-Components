@@ -33,6 +33,7 @@ export function Register({
         {error && <div className="rounded-lg bg-red-100 px-3 py-2.5 text-red-700">{error}</div>}
         <Field
           label="Name"
+          autoComplete="name"
           value={form.name}
           onChange={(event) => setForm({ ...form, name: event.target.value })}
           required
@@ -40,6 +41,7 @@ export function Register({
         <Field
           label="Email"
           type="email"
+          autoComplete="email"
           value={form.email}
           onChange={(event) => setForm({ ...form, email: event.target.value })}
           required
@@ -47,6 +49,7 @@ export function Register({
         <Field
           label="Password"
           type="password"
+          autoComplete="new-password"
           minLength={12}
           maxLength={128}
           pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{12,}"
