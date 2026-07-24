@@ -12,6 +12,7 @@ export type { DashboardSummary } from './Dashboard';
 export { EmptyState } from './EmptyState';
 export { Field } from './Field';
 export { Form } from './Form';
+export { MenuIcon } from './Icon';
 export { Library } from './Library';
 export { Login } from './Login';
 export type { LoginCredentials } from './Login';

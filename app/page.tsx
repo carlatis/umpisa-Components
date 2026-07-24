@@ -1,20 +1,19 @@
 'use client';
 
-import {
-  AppShell,
-  Card,
-  Dashboard,
-  Login,
-  ProjectDetails,
-  Projects,
-  Users,
-  type ProjectSummary,
-  type TaskListItem,
-  type UserListItem,
-} from '../components';
 import { useState } from 'react';
+import { AppShell } from '../components/AppShell';
+import { Card } from '../components/Card';
+import { Dashboard } from '../components/Dashboard';
+import { MenuIcon } from '../components/Icon';
+import { Login } from '../components/Login';
+import { ProjectDetails } from '../components/ProjectDetails';
+import type { ProjectSummary } from '../components/ProjectCard';
+import { Projects } from '../components/Projects';
+import type { TaskListItem } from '../components/TaskList';
+import type { UserListItem } from '../components/UserList';
+import { Users } from '../components/Users';
 
-type PlaygroundTab = 'login' | 'dashboard' | 'projects' | 'tasks' | 'users';
+type PlaygroundTab = 'login' | 'dashboard' | 'projects' | 'tasks' | 'users' | 'icons';
 
 const playgroundTabs: { id: PlaygroundTab; label: string }[] = [
   { id: 'login', label: 'Login' },
@@ -22,6 +21,7 @@ const playgroundTabs: { id: PlaygroundTab; label: string }[] = [
   { id: 'projects', label: 'Projects' },
   { id: 'tasks', label: 'Tasks' },
   { id: 'users', label: 'Users' },
+  { id: 'icons', label: 'Icons' },
 ];
 
 function ComponentGallery() {
@@ -211,6 +211,17 @@ function ComponentGallery() {
                   setResult('User was deleted successfully.');
                 }}
               />
+            </Card>
+          </div>
+
+          <div className={activeTab === 'icons' ? 'block' : 'hidden'} role="tabpanel">
+            <h2 className="mb-1 text-2xl font-extrabold">Icon components</h2>
+            <p className="mt-0 text-slate-500">
+              Icons inherit their color and size from the consuming application.
+            </p>
+            <Card className="flex items-center gap-4">
+              <MenuIcon className="h-6 w-8 text-indigo-600" title="Menu" />
+              <code>MenuIcon</code>
             </Card>
           </div>
         </section>

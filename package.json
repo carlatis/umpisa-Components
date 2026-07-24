@@ -11,6 +11,11 @@
       "import": "./dist/components/index.js",
       "default": "./dist/components/index.js"
     },
+    "./components/*": {
+      "types": "./dist/components/*/index.d.ts",
+      "import": "./dist/components/*/index.js",
+      "default": "./dist/components/*/index.js"
+    },
     "./next-config": {
       "types": "./dist/server/next-config.d.ts",
       "import": "./dist/server/next-config.js",
@@ -20,8 +25,7 @@
   },
   "files": [
     "dist",
-    "assets/styles.css",
-    "public"
+    "assets/styles.css"
   ],
   "scripts": {
     "dev": "next dev -p 3001",

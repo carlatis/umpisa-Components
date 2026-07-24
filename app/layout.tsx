@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import '../assets/styles.css';
-import { AuthProvider } from '../components';
+import { AuthProvider } from '../components/AuthProvider';
 
 export const metadata: Metadata = {
   title: 'Components Playground',

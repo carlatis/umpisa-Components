@@ -3,11 +3,19 @@
 ```
 assets/       Tailwind entry stylesheet
 components/   Reusable React components and public exports
-public/       Static assets used by the playground
 server/       Server-safe Next.js configuration helpers
 utils/        Framework-neutral shared utilities
 app/          Standalone Next.js component playground
 ```
+
+Import components through independent entry points so an unrelated component is not loaded with the component being used:
+
+```tsx
+import { Button } from 'component-library/components/Button';
+import { MenuIcon } from 'component-library/components/Icon';
+```
+
+The top-level `component-library` export remains available for backward compatibility, but direct component imports are recommended.
 
 ## Run the component playground
 
