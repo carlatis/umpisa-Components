@@ -7,6 +7,7 @@ import { Field } from '../Field';
 import { Form } from '../Form';
 
 export type RegistrationDetails = { name: string; email: string; password: string };
+
 export function Register({
   onSubmit,
 }: {
@@ -15,6 +16,7 @@ export function Register({
   const [form, setForm] = useState<RegistrationDetails>({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -27,6 +29,7 @@ export function Register({
       setBusy(false);
     }
   }
+  
   return (
     <AuthLayout title="Create account">
       <Form onSubmit={submit}>

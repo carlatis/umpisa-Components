@@ -13,7 +13,9 @@ export function Library({
       {children}
     </div>
   );
+
   if (!title && !description) return content;
+  
   return (
     <section>
       <header className="mb-6">

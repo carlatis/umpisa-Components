@@ -55,6 +55,7 @@ function ComponentGallery() {
       isProtected: false,
     },
   ]);
+
   return (
     <AppShell
       brand="Component Library"
@@ -207,9 +208,11 @@ function ComponentGallery() {
                     const error = new Error('Validation failed') as Error & {
                       issues: Record<string, string[]>;
                     };
+
                     error.issues = { email: ['Email already exists in the playground'] };
                     throw error;
                   }
+
                   setUsers((current) => [
                     ...current,
                     {
@@ -220,6 +223,7 @@ function ComponentGallery() {
                       isProtected: false,
                     },
                   ]);
+                  
                   setResult(`User “${draft.name}” was created successfully.`);
                 }}
                 onUpdate={async (id, draft) => {

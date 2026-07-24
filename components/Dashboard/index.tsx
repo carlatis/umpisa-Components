@@ -5,6 +5,7 @@ import { PageHeader } from '../PageHeader';
 import { ProjectCard, type ProjectSummary } from '../ProjectCard';
 
 export type DashboardSummary = AnalyticsSummaryData;
+
 export function Dashboard({
   summary,
   projects,

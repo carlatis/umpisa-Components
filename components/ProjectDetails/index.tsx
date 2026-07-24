@@ -20,7 +20,9 @@ export type ProjectDetailsData = {
   description?: string;
   tasks: TaskListItem[];
 };
+
 export type TaskDraft = { title: string; priority: TaskPriority; severity: TaskSeverity };
+
 export function ProjectDetails({
   project,
   onAddTask,
@@ -37,17 +39,21 @@ export function ProjectDetails({
     severity: 'MINOR',
   });
   const [busy, setBusy] = useState(false);
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
+    
     try {
       await onAddTask(draft);
+
       setDraft({ title: '', priority: 'MEDIUM', severity: 'MINOR' });
       setOpen(false);
     } finally {
       setBusy(false);
     }
   }
+
   return (
     <Page>
       <PageHeader

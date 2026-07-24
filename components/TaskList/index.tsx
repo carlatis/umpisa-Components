@@ -13,6 +13,7 @@ export type TaskListItem = {
   severity: TaskSeverity;
 };
 export type TaskUpdate = Partial<Pick<TaskListItem, 'status' | 'priority' | 'severity'>>;
+
 const selectClass =
   'rounded-lg border border-slate-300 bg-white px-2 py-2 text-sm outline-none focus:border-indigo-600';
 

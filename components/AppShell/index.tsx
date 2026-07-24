@@ -11,11 +11,13 @@ export type NavigationItem = {
   active?: boolean;
   onSelect?: () => void;
 };
+
 const defaultNavigation: NavigationItem[] = [
   { href: '/dashboard', label: 'Overview' },
   { href: '/projects', label: 'Projects' },
   { href: '/users', label: 'Users' },
 ];
+
 export function AppShell({
   children,
   brand = 'Umpisa Inc.',
@@ -43,6 +45,7 @@ export function AppShell({
         Loading…
       </div>
     );
+    
   return (
     <div className="grid min-h-screen grid-cols-1 bg-slate-50 md:grid-cols-[230px_1fr]">
       <aside className="flex items-center gap-4 bg-slate-900 p-4 text-slate-300 md:flex-col md:items-stretch md:p-6">

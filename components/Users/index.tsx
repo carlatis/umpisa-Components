@@ -32,6 +32,7 @@ export function Users({
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<UserField, string>>>({});
   const [busy, setBusy] = useState(false);
+
   function add() {
     setEditing(null);
     setDraft({ name: '', email: '', password: '' });
@@ -39,6 +40,7 @@ export function Users({
     setFieldErrors({});
     setOpen(true);
   }
+
   function edit(user: UserListItem) {
     setEditing(user);
     setDraft({ name: user.name, email: user.email, password: '' });
@@ -46,6 +48,7 @@ export function Users({
     setFieldErrors({});
     setOpen(true);
   }
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
@@ -74,10 +77,12 @@ export function Users({
       setBusy(false);
     }
   }
+
   async function remove(user: UserListItem) {
     if (user.isProtected || !window.confirm(`Delete ${user.name}?`)) return;
     await onDelete(user.id);
   }
+  
   return (
     <Page>
       <PageHeader

@@ -7,6 +7,7 @@ import { Field } from '../Field';
 import { Form } from '../Form';
 
 export type LoginCredentials = { email: string; password: string };
+
 export function Login({
   onSubmit,
   initialEmail = '',
@@ -22,10 +23,13 @@ export function Login({
   const [password, setPassword] = useState(initialPassword);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
+    
     setBusy(true);
     setError('');
+
     try {
       await onSubmit({ email, password });
     } catch (error) {
@@ -34,6 +38,7 @@ export function Login({
       setBusy(false);
     }
   }
+
   return (
     <AuthLayout title="Welcome back" description="Sign in to manage your delivery work.">
       {helper}

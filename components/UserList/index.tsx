@@ -9,6 +9,7 @@ export type UserListItem = {
   createdAt: string;
   isProtected: boolean;
 };
+
 export function UserList({
   users,
   loading = false,

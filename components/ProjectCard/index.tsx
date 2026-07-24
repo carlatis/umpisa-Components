@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Card } from '../Card';
 
 export type ProjectSummary = { id: string; name: string; description?: string; taskCount?: number };
+
 export function ProjectCard({ project }: { project: ProjectSummary }) {
   return (
     <Link href={`/projects/${project.id}`}>

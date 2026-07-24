@@ -12,6 +12,7 @@ import { ProjectCard, type ProjectSummary } from '../ProjectCard';
 import { TaskTable, type TaskTableItem } from '../TaskTable';
 
 export type ProjectDraft = { name: string; description: string };
+
 export function Projects({
   projects,
   tasks = [],
@@ -24,17 +25,21 @@ export function Projects({
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<ProjectDraft>({ name: '', description: '' });
   const [busy, setBusy] = useState(false);
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
+    
     try {
       await onCreate(draft);
+
       setDraft({ name: '', description: '' });
       setOpen(false);
     } finally {
       setBusy(false);
     }
   }
+
   return (
     <Page>
       <PageHeader
