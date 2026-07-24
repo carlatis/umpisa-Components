@@ -63,7 +63,7 @@ export function TaskList({
                     onChange(task, { status: event.target.value as TaskListStatus })
                   }
                 >
-                  <option value="TODO">To do</option>
+                  <option value="TODO">Ongoing</option>
                   <option value="IN_PROGRESS">In progress</option>
                   <option value="DONE">Done</option>
                 </select>

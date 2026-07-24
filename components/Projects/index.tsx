@@ -9,13 +9,16 @@ import { Page } from '../Page';
 import { PageHeader } from '../PageHeader';
 import { Placeholder } from '../Placeholder';
 import { ProjectCard, type ProjectSummary } from '../ProjectCard';
+import { TaskTable, type TaskTableItem } from '../TaskTable';
 
 export type ProjectDraft = { name: string; description: string };
 export function Projects({
   projects,
+  tasks = [],
   onCreate,
 }: {
   projects: ProjectSummary[];
+  tasks?: TaskTableItem[];
   onCreate: (draft: ProjectDraft) => Promise<void>;
 }) {
   const [open, setOpen] = useState(false);
@@ -64,6 +67,7 @@ export function Projects({
           ))}
         </Library>
       )}
+      <TaskTable tasks={tasks} />
     </Page>
   );
 }

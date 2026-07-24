@@ -27,9 +27,9 @@ export function Dashboard({
         }
       />
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <StatCard label="Projects" value={summary.projects} />
-        <StatCard label="Open tasks" value={summary.todo + summary.inProgress} />
-        <StatCard label="Completed" value={summary.done} />
+        <StatCard label="Ongoing tasks" value={summary.todo} />
+        <StatCard label="In-progress tasks" value={summary.inProgress} />
+        <StatCard label="Done tasks" value={summary.done} />
       </div>
       <h2 className="mt-8">Recent projects</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

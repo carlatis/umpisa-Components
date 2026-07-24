@@ -131,6 +131,7 @@ function ComponentGallery() {
             <Card className="overflow-hidden p-0">
               <Projects
                 projects={projects}
+                tasks={tasks.map((task) => ({ ...task, projectName: 'Website launch' }))}
                 onCreate={async (draft) => {
                   setProjects((current) => [
                     ...current,
