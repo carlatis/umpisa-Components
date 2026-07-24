@@ -10,6 +10,7 @@ export type { AuthUser } from './AuthProvider';
 export { Badge } from './Badge';
 export { Button } from './Button';
 export { Card } from './Card';
+export { ChatBotAI } from './ChatBotAI';
 export { Container } from './Container';
 export { Dashboard } from './Dashboard';
 export type { DashboardSummary } from './Dashboard';
