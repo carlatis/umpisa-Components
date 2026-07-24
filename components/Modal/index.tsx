@@ -1,6 +1,7 @@
 'use client';
+
 import type { ReactNode } from 'react';
-import { Button } from '../Button';
+
 import { Card } from '../Card';
 
 export function Modal({
@@ -27,14 +28,27 @@ export function Modal({
       <Card className="w-full max-w-lg" onMouseDown={(event) => event.stopPropagation()}>
         <div className="mb-4 flex items-center justify-between gap-4">
           <h2 className="m-0">{title}</h2>
-          <Button
-            className="bg-slate-200 px-3 py-2 text-slate-700 hover:bg-slate-300"
-            type="button"
-            onClick={onClose}
+          <button
             aria-label="Close modal"
+            className="flex h-[25px] w-[25px] shrink-0 cursor-pointer items-center justify-center rounded-md border-0 bg-transparent p-0 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={onClose}
+            type="button"
           >
-            Close
-          </Button>
+            <svg
+              aria-hidden="true"
+              className="h-[25px] w-[25px]"
+              fill="none"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M6 6l12 12M18 6 6 18"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="2"
+              />
+            </svg>
+          </button>
         </div>
         {children}
       </Card>
