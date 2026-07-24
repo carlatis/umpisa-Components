@@ -1,7 +1,9 @@
 'use client';
+
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, type ReactNode } from 'react';
+
 import { useAuth } from '../AuthProvider';
 import { cn } from '../../utils/cn';
 
@@ -47,8 +49,8 @@ export function AppShell({
     );
     
   return (
-    <div className="grid min-h-screen grid-cols-1 bg-slate-50 md:grid-cols-[230px_1fr]">
-      <aside className="flex items-center gap-4 bg-slate-900 p-4 text-slate-300 md:flex-col md:items-stretch md:p-6">
+    <div className="min-h-screen bg-slate-50">
+      <aside className="flex items-center gap-4 bg-slate-900 p-4 text-slate-300 md:fixed md:inset-y-0 md:left-0 md:z-30 md:w-[230px] md:flex-col md:items-stretch md:overflow-y-auto md:p-6">
         <Link href={homeHref} className="text-2xl font-extrabold tracking-tight text-white md:mb-8">
           {brand}
         </Link>
@@ -84,7 +86,7 @@ export function AppShell({
           </button>
         )}
       </aside>
-      <main className="min-w-0">
+      <main className="min-w-0 md:ml-[230px]">
         <header className="flex h-[70px] items-center justify-end border-b border-slate-200 bg-white px-8">
           <div className="grid">
             <small className="text-xs text-slate-500">Workspace</small>

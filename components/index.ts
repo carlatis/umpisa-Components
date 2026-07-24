@@ -40,7 +40,7 @@ export type {
   TaskUpdate,
 } from './TaskList';
 export { TaskTable } from './TaskTable';
-export type { TaskTableItem } from './TaskTable';
+export type { TaskTableItem, TaskTablePagination, TaskTableQuery } from './TaskTable';
 export { UserList } from './UserList';
 export type { UserListItem } from './UserList';
 export { Users } from './Users';

@@ -1,6 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+import { Button } from '../Button';
 import { Card } from '../Card';
 import { EmptyState } from '../EmptyState';
 import type { TaskListStatus, TaskPriority, TaskSeverity } from '../TaskList';
@@ -14,6 +16,23 @@ export type TaskTableItem = {
   severity: TaskSeverity;
 };
 
+export type TaskTableQuery = {
+  page: number;
+  pageSize: number;
+  search: string;
+  project: string;
+  status: string;
+  priority: string;
+  severity: string;
+};
+
+export type TaskTablePagination = {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+};
+
 const selectClass =
   'rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-indigo-600';
 
@@ -23,16 +42,30 @@ const statusLabels: Record<TaskListStatus, string> = {
   DONE: 'Done',
 };
 
-export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
+export function TaskTable({
+  tasks,
+  projectOptions,
+  pagination,
+  loading = false,
+  onQueryChange,
+}: {
+  tasks: TaskTableItem[];
+  projectOptions?: string[];
+  pagination?: TaskTablePagination;
+  loading?: boolean;
+  onQueryChange?: (query: TaskTableQuery) => void;
+}) {
   const [search, setSearch] = useState('');
   const [project, setProject] = useState('ALL');
   const [status, setStatus] = useState('ALL');
   const [priority, setPriority] = useState('ALL');
   const [severity, setSeverity] = useState('ALL');
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
 
   const projects = useMemo(
-    () => [...new Set(tasks.map((task) => task.projectName))].sort(),
-    [tasks],
+    () => projectOptions ?? [...new Set(tasks.map((task) => task.projectName))].sort(),
+    [projectOptions, tasks],
   );
 
   const filteredTasks = useMemo(() => {
@@ -50,19 +83,43 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
     );
   }, [priority, project, search, severity, status, tasks]);
 
+  const serverPaginated = Boolean(onQueryChange);
+  const total = pagination?.total ?? filteredTasks.length;
+  const totalPages = pagination?.totalPages ?? Math.max(1, Math.ceil(total / pageSize));
+  const displayedTasks = serverPaginated
+    ? tasks
+    : filteredTasks.slice((page - 1) * pageSize, page * pageSize);
+
+  useEffect(() => {
+    if (!onQueryChange) return;
+
+    const timeout = window.setTimeout(
+      () =>
+        onQueryChange({ page, pageSize, search, project, status, priority, severity }),
+      300,
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [onQueryChange, page, priority, project, search, severity, status]);
+
+  function updateFilter(setter: (value: string) => void, value: string) {
+    setPage(1);
+    setter(value);
+  }
+
   return (
     <Card className="mt-8">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="m-0">All tasks</h2>
           <p className="mb-0 mt-1 text-sm text-slate-500">
-            {filteredTasks.length} of {tasks.length} tasks
+            {total} matching task{total === 1 ? '' : 's'}
           </p>
         </div>
         <input
           aria-label="Search tasks"
           className="min-w-64 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-600"
-          onChange={(event) => setSearch(event.target.value)}
+          onChange={(event) => updateFilter(setSearch, event.target.value)}
           placeholder="Search task or project"
           type="search"
           value={search}
@@ -73,7 +130,7 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
         <select
           aria-label="Filter by project"
           className={selectClass}
-          onChange={(event) => setProject(event.target.value)}
+          onChange={(event) => updateFilter(setProject, event.target.value)}
           value={project}
         >
           <option value="ALL">All projects</option>
@@ -86,7 +143,7 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
         <select
           aria-label="Filter by status"
           className={selectClass}
-          onChange={(event) => setStatus(event.target.value)}
+          onChange={(event) => updateFilter(setStatus, event.target.value)}
           value={status}
         >
           <option value="ALL">All statuses</option>
@@ -97,7 +154,7 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
         <select
           aria-label="Filter by priority"
           className={selectClass}
-          onChange={(event) => setPriority(event.target.value)}
+          onChange={(event) => updateFilter(setPriority, event.target.value)}
           value={priority}
         >
           <option value="ALL">All priorities</option>
@@ -108,7 +165,7 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
         <select
           aria-label="Filter by severity"
           className={selectClass}
-          onChange={(event) => setSeverity(event.target.value)}
+          onChange={(event) => updateFilter(setSeverity, event.target.value)}
           value={severity}
         >
           <option value="ALL">All severities</option>
@@ -118,13 +175,15 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
         </select>
       </div>
 
-      {!filteredTasks.length ? (
+      {loading ? (
+        <div className="py-12 text-center text-sm text-slate-500">Loading tasks...</div>
+      ) : !displayedTasks.length ? (
         <EmptyState title="No matching tasks" description="Change the search or filters." />
       ) : (
-        <div className="overflow-x-auto">
+        <div className="max-h-[28rem] overflow-auto overscroll-contain">
           <table className="w-full min-w-[760px] border-collapse text-left text-sm">
-            <thead>
-              <tr className="border-b border-slate-200 text-slate-500">
+            <thead className="sticky top-0 z-10 bg-white">
+              <tr className="border-b border-slate-200 text-slate-500 shadow-[0_1px_0_0_rgb(226_232_240)]">
                 <th className="px-3 py-3 font-semibold">Task name</th>
                 <th className="px-3 py-3 font-semibold">Project name</th>
                 <th className="px-3 py-3 font-semibold">Status</th>
@@ -133,7 +192,7 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
               </tr>
             </thead>
             <tbody>
-              {filteredTasks.map((task) => (
+              {displayedTasks.map((task) => (
                 <tr className="border-b border-slate-100 last:border-0" key={task.id}>
                   <td className="px-3 py-3 font-semibold text-slate-900">{task.title}</td>
                   <td className="px-3 py-3">{task.projectName}</td>
@@ -146,6 +205,23 @@ export function TaskTable({ tasks }: { tasks: TaskTableItem[] }) {
           </table>
         </div>
       )}
+
+      <div className="mt-4 flex items-center justify-between gap-4 border-t border-slate-200 pt-4">
+        <span className="text-sm text-slate-500">
+          Page {page} of {totalPages}
+        </span>
+        <div className="flex gap-2">
+          <Button disabled={loading || page <= 1} onClick={() => setPage((value) => value - 1)}>
+            Previous
+          </Button>
+          <Button
+            disabled={loading || page >= totalPages}
+            onClick={() => setPage((value) => value + 1)}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
     </Card>
   );
 }

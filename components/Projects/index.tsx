@@ -1,5 +1,7 @@
 'use client';
+
 import { useState } from 'react';
+
 import { Button } from '../Button';
 import { Field } from '../Field';
 import { Form } from '../Form';
@@ -9,17 +11,28 @@ import { Page } from '../Page';
 import { PageHeader } from '../PageHeader';
 import { Placeholder } from '../Placeholder';
 import { ProjectCard, type ProjectSummary } from '../ProjectCard';
-import { TaskTable, type TaskTableItem } from '../TaskTable';
+import {
+  TaskTable,
+  type TaskTableItem,
+  type TaskTablePagination,
+  type TaskTableQuery,
+} from '../TaskTable';
 
 export type ProjectDraft = { name: string; description: string };
 
 export function Projects({
   projects,
   tasks = [],
+  taskPagination,
+  tasksLoading,
+  onTaskQueryChange,
   onCreate,
 }: {
   projects: ProjectSummary[];
   tasks?: TaskTableItem[];
+  taskPagination?: TaskTablePagination;
+  tasksLoading?: boolean;
+  onTaskQueryChange?: (query: TaskTableQuery) => void;
   onCreate: (draft: ProjectDraft) => Promise<void>;
 }) {
   const [open, setOpen] = useState(false);
@@ -72,7 +85,13 @@ export function Projects({
           ))}
         </Library>
       )}
-      <TaskTable tasks={tasks} />
+      <TaskTable
+        tasks={tasks}
+        projectOptions={projects.map((project) => project.name)}
+        pagination={taskPagination}
+        loading={tasksLoading}
+        onQueryChange={onTaskQueryChange}
+      />
     </Page>
   );
 }
