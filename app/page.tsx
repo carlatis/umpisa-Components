@@ -5,7 +5,7 @@ import { AccountSettings, type AccountProfile } from '../components/AccountSetti
 import { AppShell } from '../components/AppShell';
 import { Card } from '../components/Card';
 import { Dashboard } from '../components/Dashboard';
-import { MenuIcon } from '../components/Icon';
+import { CloseIcon, MenuIcon } from '../components/Icon';
 import { Login } from '../components/Login';
 import { ProjectDetails } from '../components/ProjectDetails';
 import type { ProjectSummary } from '../components/ProjectCard';
@@ -284,6 +284,8 @@ function ComponentGallery() {
             <Card className="flex items-center gap-4">
               <MenuIcon className="h-6 w-8 text-indigo-600" title="Menu" />
               <code>MenuIcon</code>
+              <CloseIcon className="h-6 w-6 text-indigo-600" title="Close" />
+              <code>CloseIcon</code>
             </Card>
           </div>
         </section>

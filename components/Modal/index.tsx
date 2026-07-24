@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 
 import { Card } from '../Card';
+import { CloseIcon } from '../Icon';
 
 export function Modal({
   open,
@@ -34,20 +35,7 @@ export function Modal({
             onClick={onClose}
             type="button"
           >
-            <svg
-              aria-hidden="true"
-              className="h-[25px] w-[25px]"
-              fill="none"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M6 6l12 12M18 6 6 18"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="2"
-              />
-            </svg>
+            <CloseIcon className="h-[25px] w-[25px]" />
           </button>
         </div>
         {children}
