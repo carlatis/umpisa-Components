@@ -24,7 +24,21 @@ function getRuntimeConfigValue(name: string) {
         }
     }
 
-    return process.env[name] || process.env[name.toUpperCase()] || '';
+    const candidates = [
+        name,
+        name.replace(/([a-z])([A-Z])/g, '$1_$2'),
+        name.toUpperCase(),
+        name.replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase(),
+    ];
+
+    for (const candidate of candidates) {
+        const value = process.env[candidate];
+        if (typeof value === 'string' && value.trim().length > 0) {
+            return value;
+        }
+    }
+
+    return '';
 }
 
 function getProvider(): LlmProvider {
