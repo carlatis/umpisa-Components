@@ -117,7 +117,28 @@ function ComponentGallery() {
             <p className="mt-0 text-slate-500">Rendered with representative project data.</p>
             <Card className="overflow-hidden p-0">
               <Dashboard
-                summary={{ projects: projects.length, todo: 2, inProgress: 1, done: 3 }}
+                summary={{
+                  projects: projects.length,
+                  tasks: {
+                    total: 6,
+                    ongoing: 2,
+                    inProgress: 1,
+                    done: 3,
+                    needsAttention: 2,
+                  },
+                  priority: { low: 1, medium: 2, high: 3 },
+                  severity: { minor: 2, major: 2, critical: 2 },
+                  projectSummary: projects.map((project) => ({
+                    id: project.id,
+                    name: project.name,
+                    tasks: 6,
+                    ongoing: 2,
+                    inProgress: 1,
+                    done: 3,
+                    highPriority: 3,
+                    criticalSeverity: 2,
+                  })),
+                }}
                 projects={projects}
               />
             </Card>
