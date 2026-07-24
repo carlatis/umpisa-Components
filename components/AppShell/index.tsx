@@ -18,6 +18,7 @@ const defaultNavigation: NavigationItem[] = [
   { href: '/dashboard', label: 'Overview' },
   { href: '/projects', label: 'Projects' },
   { href: '/users', label: 'Users' },
+  { href: '/account', label: 'Account Settings' },
 ];
 
 export function AppShell({

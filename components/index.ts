@@ -1,5 +1,7 @@
 export { AppShell } from './AppShell';
 export type { NavigationItem } from './AppShell';
+export { AccountSettings } from './AccountSettings';
+export type { AccountProfile } from './AccountSettings';
 export { AnalyticsSummary } from './AnalyticsSummary';
 export type { AnalyticsSummaryData, AttentionTask } from './AnalyticsSummary';
 export { AuthLayout } from './AuthLayout';

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { AccountSettings, type AccountProfile } from '../components/AccountSettings';
 import { AppShell } from '../components/AppShell';
 import { Card } from '../components/Card';
 import { Dashboard } from '../components/Dashboard';
@@ -13,7 +14,14 @@ import type { TaskListItem } from '../components/TaskList';
 import type { UserListItem } from '../components/UserList';
 import { Users } from '../components/Users';
 
-type PlaygroundTab = 'login' | 'dashboard' | 'projects' | 'tasks' | 'users' | 'icons';
+type PlaygroundTab =
+  | 'login'
+  | 'dashboard'
+  | 'projects'
+  | 'tasks'
+  | 'users'
+  | 'account'
+  | 'icons';
 
 const playgroundTabs: { id: PlaygroundTab; label: string }[] = [
   { id: 'login', label: 'Login' },
@@ -21,6 +29,7 @@ const playgroundTabs: { id: PlaygroundTab; label: string }[] = [
   { id: 'projects', label: 'Projects' },
   { id: 'tasks', label: 'Tasks' },
   { id: 'users', label: 'Users' },
+  { id: 'account', label: 'Account Settings' },
   { id: 'icons', label: 'Icons' },
 ];
 
@@ -55,6 +64,12 @@ function ComponentGallery() {
       isProtected: false,
     },
   ]);
+  const [account, setAccount] = useState<AccountProfile>({
+    id: 'user-1',
+    name: 'First Administrator',
+    email: 'admin@umpisa.test',
+    role: 'ADMIN',
+  });
 
   return (
     <AppShell
@@ -238,6 +253,27 @@ function ComponentGallery() {
                 }}
               />
             </Card>
+          </div>
+
+          <div className={activeTab === 'account' ? 'block' : 'hidden'} role="tabpanel">
+            <AccountSettings
+              profile={account}
+              onUpdateProfile={async (values) => {
+                const updated = { ...account, ...values };
+
+                setAccount(updated);
+                setResult('Account profile was updated successfully.');
+
+                return updated;
+              }}
+              onChangePassword={async ({ currentPassword }) => {
+                if (currentPassword !== 'Password123!') {
+                  throw new Error('Current password is incorrect');
+                }
+
+                setResult('Account password was changed successfully.');
+              }}
+            />
           </div>
 
           <div className={activeTab === 'icons' ? 'block' : 'hidden'} role="tabpanel">

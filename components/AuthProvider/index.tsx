@@ -1,13 +1,15 @@
 'use client';
+
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
-export type AuthUser = { id: string; name: string; email: string };
+export type AuthUser = { id: string; name: string; email: string; role?: 'ADMIN' | 'USER' };
 
 type AuthValue = {
   user: AuthUser | null;
   ready: boolean;
   login: (token: string, user: AuthUser) => void;
+  updateUser: (user: AuthUser) => void;
   logout: () => void;
 };
 
@@ -56,8 +58,15 @@ export function AuthProvider({
     router.push('/login');
   }
 
+  function updateUser(nextUser: AuthUser) {
+    localStorage.setItem(userKey, JSON.stringify(nextUser));
+    setUser(nextUser);
+  }
+
   return (
-    <AuthContext.Provider value={{ user, ready, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, ready, login, updateUser, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
 }
 
