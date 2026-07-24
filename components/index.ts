@@ -1,7 +1,7 @@
 export { AppShell } from './AppShell';
 export type { NavigationItem } from './AppShell';
-export { AnalyticsBreakdown } from './AnalyticsBreakdown';
-export type { AnalyticsDistribution, SeverityDistribution } from './AnalyticsBreakdown';
+export { AnalyticsSummary } from './AnalyticsSummary';
+export type { AnalyticsSummaryData, AttentionTask } from './AnalyticsSummary';
 export { AuthLayout } from './AuthLayout';
 export { AuthProvider, useAuth } from './AuthProvider';
 export type { AuthUser } from './AuthProvider';
@@ -25,8 +25,6 @@ export { ProjectCard } from './ProjectCard';
 export type { ProjectSummary } from './ProjectCard';
 export { ProjectDetails } from './ProjectDetails';
 export type { ProjectDetailsData, TaskDraft } from './ProjectDetails';
-export { ProjectHealthTable } from './ProjectHealthTable';
-export type { ProjectHealth } from './ProjectHealthTable';
 export { Projects } from './Projects';
 export type { ProjectDraft } from './Projects';
 export { Register } from './Register';

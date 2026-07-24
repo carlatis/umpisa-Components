@@ -128,16 +128,16 @@ function ComponentGallery() {
                   },
                   priority: { low: 1, medium: 2, high: 3 },
                   severity: { minor: 2, major: 2, critical: 2 },
-                  projectSummary: projects.map((project) => ({
-                    id: project.id,
-                    name: project.name,
-                    tasks: 6,
-                    ongoing: 2,
-                    inProgress: 1,
-                    done: 3,
-                    highPriority: 3,
-                    criticalSeverity: 2,
-                  })),
+                  attentionTasks: [
+                    {
+                      id: 'attention-1',
+                      title: 'Review production checklist',
+                      projectName: 'Website launch',
+                      status: 'IN_PROGRESS',
+                      priority: 'HIGH',
+                      severity: 'MAJOR',
+                    },
+                  ],
                 }}
                 projects={projects}
               />
