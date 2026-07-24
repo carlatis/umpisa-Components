@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-import { Button } from '../Button';
 import { Card } from '../Card';
 import { EmptyState } from '../EmptyState';
 import type { TaskListStatus, TaskPriority, TaskSeverity } from '../TaskList';
@@ -41,6 +40,29 @@ const statusLabels: Record<TaskListStatus, string> = {
   IN_PROGRESS: 'In progress',
   DONE: 'Done',
 };
+
+type PaginationItem = number | 'start-ellipsis' | 'end-ellipsis';
+
+function getPaginationItems(page: number, totalPages: number): PaginationItem[] {
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  if (page <= 4) return [1, 2, 3, 4, 'end-ellipsis', totalPages];
+
+  if (page >= totalPages - 3) {
+    return [
+      1,
+      'start-ellipsis',
+      totalPages - 3,
+      totalPages - 2,
+      totalPages - 1,
+      totalPages,
+    ];
+  }
+
+  return [1, 'start-ellipsis', page - 1, page, page + 1, 'end-ellipsis', totalPages];
+}
 
 export function TaskTable({
   tasks,
@@ -89,6 +111,7 @@ export function TaskTable({
   const displayedTasks = serverPaginated
     ? tasks
     : filteredTasks.slice((page - 1) * pageSize, page * pageSize);
+  const paginationItems = getPaginationItems(page, totalPages);
 
   useEffect(() => {
     if (!onQueryChange) return;
@@ -206,21 +229,90 @@ export function TaskTable({
         </div>
       )}
 
-      <div className="mt-4 flex items-center justify-between gap-4 border-t border-slate-200 pt-4">
-        <span className="text-sm text-slate-500">
-          Page {page} of {totalPages}
-        </span>
-        <div className="flex gap-2">
-          <Button disabled={loading || page <= 1} onClick={() => setPage((value) => value - 1)}>
-            Previous
-          </Button>
-          <Button
-            disabled={loading || page >= totalPages}
-            onClick={() => setPage((value) => value + 1)}
-          >
-            Next
-          </Button>
-        </div>
+      <div className="mt-4 flex justify-center border-t border-slate-200 pt-4">
+        <nav aria-label="Task table pagination">
+          <ul className="flex -space-x-px text-sm">
+            <li>
+              <button
+                aria-label="Previous page"
+                className="flex h-9 w-9 items-center justify-center rounded-l-lg border border-slate-300 bg-white font-medium text-slate-600 transition hover:z-10 hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+                disabled={loading || page <= 1}
+                onClick={() => setPage((value) => value - 1)}
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m15 19-7-7 7-7"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </button>
+            </li>
+
+            {paginationItems.map((item) => (
+              <li key={item}>
+                {typeof item === 'number' ? (
+                  <button
+                    aria-current={item === page ? 'page' : undefined}
+                    aria-label={`Page ${item}`}
+                    className={`flex h-9 w-9 items-center justify-center border border-slate-300 font-medium transition hover:z-10 ${
+                      item === page
+                        ? 'z-10 bg-white font-bold text-black hover:bg-slate-100'
+                        : 'bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                    }`}
+                    disabled={loading}
+                    onClick={() => setPage(item)}
+                    type="button"
+                  >
+                    {item}
+                  </button>
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    className="flex h-9 w-9 items-center justify-center border border-slate-300 bg-white font-medium text-slate-500"
+                  >
+                    ...
+                  </span>
+                )}
+              </li>
+            ))}
+
+            <li>
+              <button
+                aria-label="Next page"
+                className="flex h-9 w-9 items-center justify-center rounded-r-lg border border-slate-300 bg-white font-medium text-slate-600 transition hover:z-10 hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-40"
+                disabled={loading || page >= totalPages}
+                onClick={() => setPage((value) => value + 1)}
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m9 5 7 7-7 7"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  />
+                </svg>
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </Card>
   );
