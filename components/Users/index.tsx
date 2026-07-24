@@ -9,8 +9,10 @@ import { PageHeader } from '../PageHeader';
 import { UserList, type UserListItem } from '../UserList';
 
 export type UserDraft = { name: string; email: string; password?: string };
+
 type UserField = keyof UserDraft;
 type ValidationError = Error & { issues?: Partial<Record<UserField, string[]>> };
+
 export function Users({
   users,
   loading = false,
